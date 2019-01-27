@@ -10,6 +10,9 @@ namespace MediaControllerRemote
     {
         public SearchPage()
         {
+            TypeBox.SelectedIndex = LocalDataStorage.data.SelectedTypeIndex;
+            QueryText.Text = LocalDataStorage.data.LastQuery;
+            
             InitializeComponent();
         }
 
@@ -31,6 +34,11 @@ namespace MediaControllerRemote
            
             string searchStr = sb.ToString();
             MySocketClient.Instance.SendCommand(searchStr);
+            
+            LocalDataStorage.data.SelectedTypeIndex = TypeBox.SelectedIndex;
+            LocalDataStorage.data.LastQuery = QueryText.Text;
+            LocalDataStorage.WriteData();
+
         }
 
         private void fill(StringBuilder sb, string field, TextBox box)

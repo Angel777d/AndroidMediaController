@@ -13,6 +13,8 @@ namespace MediaControllerRemote
             InitializeComponent();
             MySocketClient.Instance.SocketConnectedEvent += OnInstanceOnSocketConnectedEvent;
             MySocketClient.Instance.SocketDisconnectedEvent += OnInstanceOnSocketDisconnectedEvent;
+
+            ipInput.Text = LocalDataStorage.data.IPAddress;
         }
 
         private void OnConnect(object sender, RoutedEventArgs e)
@@ -23,9 +25,12 @@ namespace MediaControllerRemote
             {
                 //IPHostEntry ipHostInfo = Dns.GetHostEntry(host);
                 //_remoteEp = new IPEndPoint(ipHostInfo.AddressList[0], port);
-
+                
                 IPAddress address = IPAddress.Parse(addressText);
-                MySocketClient.Instance.Connect(address, Constants.PORT);
+                int defaultPort = 8083;
+                MySocketClient.Instance.Connect(address, defaultPort);
+                
+                
             }
             catch (Exception ex)
             {
@@ -34,6 +39,10 @@ namespace MediaControllerRemote
                 return;
                 
             }
+            
+            LocalDataStorage.data.IPAddress = addressText;
+            LocalDataStorage.WriteData();
+
             StatusLabel.Content = "Connecting...";
         }
 

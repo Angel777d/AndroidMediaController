@@ -53,6 +53,7 @@
     <Compile Include="SearchPage.xaml.cs">
       <DependentUpon>SearchPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="LocalDataStorage.cs" />
     <Page Include="ConnectPage.xaml" />
     <Page Include="MainPage.xaml" />
     <Page Include="MainWindow.xaml">
