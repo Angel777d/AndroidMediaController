@@ -1,12 +1,9 @@
 package ru.angelovich.mediacontroller.mediacontrollerserver;
 
-import android.app.SearchManager;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
 import android.media.AudioManager;
-import android.net.UrlQuerySanitizer;
-import android.provider.MediaStore;
 
 class MediaController {
 
@@ -51,7 +48,11 @@ class MediaController {
                 VolumeDown();
                 break;
             default:
-                ReadParams(cmd);
+                Intent intent = SearchCommands.process(cmd);
+                if (intent != null && intent.resolveActivity(context.getPackageManager()) != null) {
+                    context.startActivity(intent);
+                }
+
                 break;
         }
     }
@@ -73,17 +74,7 @@ class MediaController {
     }
 
     private void ReadParams(String cmd) {
-        Intent intent = new Intent(MediaStore.INTENT_ACTION_MEDIA_PLAY_FROM_SEARCH);
 
-        UrlQuerySanitizer sanitizer = new UrlQuerySanitizer(cmd);
-
-        for (UrlQuerySanitizer.ParameterValuePair pair : sanitizer.getParameterList()) {
-            UpdateIntentWith(intent, pair.mParameter, pair.mValue);
-        }
-
-        if (intent.resolveActivity(context.getPackageManager()) != null) {
-            context.startActivity(intent);
-        }
 
     }
 
@@ -126,32 +117,5 @@ class MediaController {
 //    public static final String ENTRY_CONTENT_TYPE = "vnd.android.cursor.item/album";
 //    public static final String ENTRY_CONTENT_TYPE = "vnd.android.cursor.item/radio";
 
-    private void UpdateIntentWith(Intent intent, String paramName, String paramValue) {
-        if (paramValue.isEmpty())
-            return;
-//        paramValue = paramValue.replace("_", " ");
-        switch (paramName) {
-            case "focus":
-                //intent.putExtra(MediaStore.EXTRA_MEDIA_FOCUS, MediaStore.Audio.Artists.ENTRY_CONTENT_TYPE);
-                intent.putExtra(MediaStore.EXTRA_MEDIA_FOCUS, "vnd.android.cursor.item/" + paramValue);
-                break;
-            case "artist":
-            case "album":
-            case "title":
-            case "genre":
-            case "playlist":
-            case "radio":
-                // intent.putExtra(MediaStore.EXTRA_MEDIA_ARTIST, paramValue);
-                intent.putExtra("android.intent.extra." + paramName, paramValue);
-                break;
-            case "query":
-                intent.putExtra(SearchManager.QUERY, paramValue);
-                break;
-            default:
-                intent.putExtra(SearchManager.QUERY, paramName + " " + paramValue);
-                break;
-        }
 
-
-    }
 }

@@ -1,6 +1,7 @@
 package ru.angelovich.sockets;
 
 import android.util.Log;
+import android.util.Xml;
 
 import java.io.IOException;
 import java.io.InputStream;

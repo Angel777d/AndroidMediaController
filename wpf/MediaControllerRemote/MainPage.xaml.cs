@@ -1,3 +1,4 @@
+using System;
 using System.Net;
 using System.Windows;
 using System.Windows.Controls;
@@ -31,9 +32,7 @@ namespace MediaControllerRemote
 
         private void OnSearch(object sender, RoutedEventArgs e)
         {
-            string pf = WebUtility.UrlEncode("Pink Floyd");
-            string searchStr = string.Format("search?focus=artist&artist={0}&query={1}", pf, pf);
-            MySocketClient.Instance.SendCommand(searchStr);
+            NavigationService?.Navigate(new Uri("SearchPage.xaml", UriKind.RelativeOrAbsolute));
         }
 
         private void Log(string message)

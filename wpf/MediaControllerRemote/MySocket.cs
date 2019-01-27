@@ -146,7 +146,7 @@ namespace MediaControllerRemote
 
         private static void Send(StateObject state, string data)
         {
-            byte[] byteData = Encoding.ASCII.GetBytes(data);
+            byte[] byteData = Encoding.UTF8.GetBytes(data);
             state.Socket.BeginSend(byteData, 0, byteData.Length, 0, OnSend, state);
         }
 
