@@ -51,11 +51,11 @@
             <Button Click="OnAction"
                     x:Name="volume_up"
                     Content="Vol+"
-                    Grid.Column="0" />
+                    Grid.Column="1" />
             <Button Click="OnAction"
                     x:Name="volume_down"
                     Content="Vol-"
-                    Grid.Column="1" />
+                    Grid.Column="0" />
 
         </Grid>
 
