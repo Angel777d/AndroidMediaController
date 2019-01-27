@@ -1,5 +1,3 @@
-using System.Diagnostics;
-using System.Net;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -10,10 +8,10 @@ namespace MediaControllerRemote
     {
         public SearchPage()
         {
+            InitializeComponent();
+
             TypeBox.SelectedIndex = LocalDataStorage.data.SelectedTypeIndex;
             QueryText.Text = LocalDataStorage.data.LastQuery;
-            
-            InitializeComponent();
         }
 
         private void OnBack(object sender, RoutedEventArgs e)
@@ -23,22 +21,21 @@ namespace MediaControllerRemote
 
         private void OnSearch(object sender, RoutedEventArgs e)
         {
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
 
             sb.Append("search?");
-            
-            TextBlock selectedItem = (TextBlock)TypeBox.SelectedItem;
+
+            var selectedItem = (TextBlock) TypeBox.SelectedItem;
             sb.Append(selectedItem.Text);
             sb.Append("=");
             sb.Append(QueryText.Text);
-           
-            string searchStr = sb.ToString();
+
+            var searchStr = sb.ToString();
             MySocketClient.Instance.SendCommand(searchStr);
-            
+
             LocalDataStorage.data.SelectedTypeIndex = TypeBox.SelectedIndex;
             LocalDataStorage.data.LastQuery = QueryText.Text;
             LocalDataStorage.WriteData();
-
         }
 
         private void fill(StringBuilder sb, string field, TextBox box)
@@ -47,7 +44,7 @@ namespace MediaControllerRemote
             sb.Append("&");
             sb.Append(field);
             sb.Append("=");
-            
+
             sb.Append(box.Text);
         }
     }

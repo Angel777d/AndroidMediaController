@@ -2,7 +2,6 @@ using System;
 using System.Net;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Threading;
 
 namespace MediaControllerRemote
 {
@@ -19,27 +18,24 @@ namespace MediaControllerRemote
 
         private void OnConnect(object sender, RoutedEventArgs e)
         {
-            string addressText = ipInput.Text;
+            var addressText = ipInput.Text;
 
             try
             {
                 //IPHostEntry ipHostInfo = Dns.GetHostEntry(host);
                 //_remoteEp = new IPEndPoint(ipHostInfo.AddressList[0], port);
-                
-                IPAddress address = IPAddress.Parse(addressText);
-                int defaultPort = 8083;
+
+                var address = IPAddress.Parse(addressText);
+                var defaultPort = 8083;
                 MySocketClient.Instance.Connect(address, defaultPort);
-                
-                
             }
             catch (Exception ex)
             {
-                Console.WriteLine(e);
+                Console.WriteLine(ex);
                 StatusLabel.Content = "Wrong Ip formant:";
                 return;
-                
             }
-            
+
             LocalDataStorage.data.IPAddress = addressText;
             LocalDataStorage.WriteData();
 
